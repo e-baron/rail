@@ -1,0 +1,12 @@
+{
+  "name": "md-to-html-zoom",
+  "version": "1.0.0",
+  "description": "Convert Markdown with Mermaid to HTML with Zoom",
+  "main": "md-to-html.js",
+  "scripts": {
+    "convert": "node md-to-html.js"
+  },
+  "dependencies": {
+    "marked": "^12.0.2"
+  }
+}
