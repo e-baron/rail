@@ -5,205 +5,28 @@ Cliquez sur les boîtes ci-dessous pour accéder au détail de chaque étape.
 ```mermaid
 flowchart TB
     %% Noeuds principaux
-    ID_DESC[0. Description du changement]
     ID_TSI[1. Catégories TSI & NoBo]
     ID_CSM[2. Catégories CSM, CENELEC, AR & Eval. externes]
     ID_OPE["3. Système opérationnel (AR art. 6)"]
-    style ID_DESC fill:#e1bee7,stroke:#4a148c,stroke-width:2px,color:#4a148c
     style ID_TSI fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
     style ID_CSM fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
     style ID_OPE fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
 
     %% Flux principal
-    ID_DESC --> ID_TSI
     ID_TSI --> ID_CSM
     ID_CSM --> Q_OPE{Modification du système opérationnel ?}
     Q_OPE -->|Oui| ID_OPE
     Q_OPE -->|Non| ID_CSM
 
     %% Interactions (ancres internes)
-    click ID_DESC href "#0-desc" "Voir le détail Description"
     click ID_TSI href "#1-tsi" "Voir le détail TSI"
     click ID_CSM href "#2-csm-cen" "Voir le détail CSM/CEN/AR"
     click ID_OPE href "#3-ope" "Voir le détail Opérationnel (AR art. 6)"
 ```
 
-> **Navigation rapide** : [0. Description](#0-desc) | [1. Détail TSI](#1-tsi) | [2. Détail CSM & EN 50126](#2-csm-cen) | [3. Système opérationnel](#3-ope)
+> **Navigation rapide** : [1. Détail TSI](#1-tsi) | [2. Détail CSM & EN 50126](#2-csm-cen) | [3. Système opérationnel](#3-ope)
 
 ---
-
----
-
-## <a id="0-desc"></a>0. Description du changement
-
-### Identification du changement
-1. **Identification des sous-systèmes impactés** :
-   - [ ] Infrastructure
-   - [ ] Energie
-   - [ ] Contrôle-commande et signalisation au sol
-   - [ ] Contrôle-commande et signalisation à bord
-   - [ ] Exploitation et gestion du trafic (procédures et / ou équipements)
-   - [ ] Applications télématiques
-   - [ ] Matériel roulant
-   - [ ] Entretien (procédures et/ou équipements)
-
-2. **Nature du changement (par sous-système)** :
-   Sélectionner le type de changement parmi les options suivantes :
-
-```mermaid
-flowchart TB
-    %% Nodes
-    START("0. INITIALISATION")
-    
-    %% Etape 1 : Sous-systèmes
-    SUBSYS{1. Identification des sous-systèmes impactés}
-    SUBSYS_LIST["Le changement impacte ce(s) sous-système(s) :
-    □ Infrastructure
-    □ Energie
-    □ Contrôle-commande et signalisation au sol
-    □ Contrôle-commande et signalisation à bord
-    □ Exploitation et gestion du trafic
-    □ Applications télématiques 
-    □ Matériel roulant
-    □ Entretien"]
-    
-    %% Etape 2 : Système de référence
-    REF_SYS{2. Identification Système de Référence}
-    REF_SYS_LIST["Pour chaque sous-système :
-    □ Système de référence identifié ?
-    □ Niveau SIL associé (ex: SIL2, SIL4) ?
-    □ Le système est-il inchangé ?"]
-
-    %% Etape 3 : Substitution
-    Q_SUBST{"3. Substitution ?"}
-
-    %% Etape 4 : Déploiement PROJET
-    Q_DEP_IN{"4. Déploiement PROJET (Dans SFU) ?"}
-    
-    %% Etape 5 : Déploiement HORS SFU
-    Q_DEP_OUT{"5. Déploiement HORS SFU ?"}
-
-    %% --- FEUILLES (Boîtes résultats) ---
-    
-    %% Substitution
-    SUBST_RES["(S.L) Substitution Legacy
-    (S.C) Substitution Certifié"]
-    
-    %% Projet (Dans SFU)
-    Q_UNCH_IN{"Système inchangé ?"}
-    IN_UNCH["(DL) Legacy Inchangé
-    (DC) Certifié Inchangé"]
-    IN_CH["(DML) Modif Legacy
-    (DMC) Modif Certifié
-    (DN) Nouveau"]
-    
-    %% Hors SFU
-    Q_UNCH_OUT{"Système inchangé ?"}
-    OUT_UNCH["(DHUL) Legacy Inchangé
-    (DHUC) Certifié Inchangé"]
-    OUT_CH["(DHUML) Modif Legacy
-    (DHUMC) Modif Certifié
-    (DHUN) Nouveau"]
-    
-    %% Sans Déploiement (Cas par défaut si Non partout)
-    NO_DEP_RES["(ML) Modif Legacy
-    (MC) Modif Certifié
-    (N) Nouveau"]
-    
-    %% Etape Finale : Infos Déploiement
-    DEPLOY_INFOS{Infos déploiement}
-    DEPLOY_DET["Compléter si applicable le phasage :
-    □ Phase pilote (ex : L73 - ETCS L2 SWoLSS) :
-    (DMC) Déploiement de la modification d'un sous-système de référence certifié
-    □ Phase Rollout (ex : Lignes LXY LZZ LXX - ETCS L2 SWoLSS) :
-    (DC) Déploiement d'un sous-système de référence certifié et inchangé
-    □ Pas de phase (ex : L29) :
-    (DMC) Déploiement de la modification d'un sous-système de référence certifié"]
-    
-    STOP((Fin))
-
-    %% Relations principales (Flux vertical)
-    START --> SUBSYS
-    SUBSYS --- SUBSYS_LIST
-    SUBSYS --> REF_SYS
-    REF_SYS --- REF_SYS_LIST
-    REF_SYS --> Q_SUBST
-    
-    %% Logique Substitution
-    Q_SUBST -->|Oui| SUBST_RES
-    Q_SUBST -->|Non| Q_DEP_IN
-    
-    %% Logique Projet
-    Q_DEP_IN -->|Oui| Q_UNCH_IN
-    Q_UNCH_IN -->|Oui| IN_UNCH
-    Q_UNCH_IN -->|Non| IN_CH
-    
-    
-    Q_DEP_IN -->|Non| Q_DEP_OUT
-
-    %% Logique Hors SFU
-    Q_DEP_OUT -->|Oui| Q_UNCH_OUT
-    Q_UNCH_OUT -->|Oui| OUT_UNCH
-    Q_UNCH_OUT -->|Non| OUT_CH
-    
-    
-    %% Logique Sans Déploiement (ni subst, ni projet, ni hors sfu)
-    Q_DEP_OUT -->|Non| NO_DEP_RES
-
-    %% Convergence vers fin
-    SUBST_RES --> STOP
-    
-    IN_UNCH --> DEPLOY_INFOS
-    IN_CH --> DEPLOY_INFOS
-    
-    OUT_UNCH --> DEPLOY_INFOS
-    OUT_CH --> DEPLOY_INFOS
-    
-    NO_DEP_RES --> STOP
-    
-    DEPLOY_INFOS --- DEPLOY_DET
-    DEPLOY_DET --> STOP
-    
-    %% Styles
-    style START fill:#f9f,stroke:#333
-    style SUBSYS_LIST fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
-    style REF_SYS_LIST fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
-    style DEPLOY_DET fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
-
-    
-    %% Couleurs par catégorie
-    style SUBST_RES fill:#e1f5fe
-    style NO_DEP_RES fill:#ffebee
-    style OUT_UNCH fill:#e8f5e9
-    style OUT_CH fill:#e8f5e9
-    style IN_UNCH fill:#fff3e0
-    style IN_CH fill:#fff3e0
-```
-
-### Définitions détaillées des changements
-- **(SL)** Substitution d'un produit legacy existant
-- **(SC)** Substitution d'un produit certifié existant
-- **(ML)** Modification d'un système de référence legacy sans déploiement prévu dans ce projet
-- **(MC)** Modification d'un système de référence certifié sans déploiement prévu dans ce projet
-- **(N)** Création d'un nouveau système sans déploiement prévu dans ce projet
-- **(DHUML)** Déploiement hors du système ferroviaire de l'Union de la modification d'un système de référence legacy
-- **(DHUL)** Déploiement hors du système ferroviaire de l'Union d'un système de référence legacy et inchangé
-- **(DHUMC)** Déploiement hors du système ferroviaire de l'Union de la modification d'un système de référence certifié
-- **(DHUC)** Déploiement hors du système ferroviaire de l'Union d'un système de référence certifié et inchangé
-- **(DHUN)** Création et déploiement hors du système ferroviaire de l’Union d'un nouveau système
-- **(DML)** Déploiement de la modification d'un système de référence legacy
-- **(DL)** Déploiement d'un système legacy de référence inchangé
-- **(DMC)** Déploiement de la modification d'un système de référence certifié
-- **(DC)** Déploiement d'un système de référence certifié et inchangé
-- **(DN)** Création et déploiement d'un nouveau système
-
-### Informations de déploiement
-- **SFU impacté** : Lignes ou régions
-- **Véhicules de l'Union impactés** : Oui / Non
-- **Phasage** :
-    - Phase(s) projet pilote
-    - Phase(s) projet rollout
-    - Pas de phase (un seul déploiement)
 
 ---
 
