@@ -216,14 +216,7 @@ flowchart TB
     Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
     Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
     
-    Q_P_INF_NOTE["<b>Note (si Non modifié) :</b>
-    - Modification d'un sous-système qui n'impacte pas les zones géographiques ni le système de référence
-      (ex: déplacements de signaux et de balises...)
-    - Modification d'un sous-système qui impacte le système de référence mais qui est mineure
-      (ex: nouvelle baseline générique mineure)"]
-    Q_P_INF ~~~ Q_P_INF_NOTE
-    style Q_P_INF_NOTE fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
-
+    
     Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
     Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
     ADD_INF --> CHECK_CCS
@@ -241,6 +234,15 @@ flowchart TB
 
     %% Puis logique TSI0/TSI1
     ERA19 --> Q_P_CCS{"Paramètre TSI modifié ?"}
+    
+    Q_P_CCS_NOTE["<b>Note (si Non modifié) :</b>
+    - Modification d'un sous-système qui n'impacte pas les zones géographiques ni le système de référence
+      (ex: déplacements de signaux et de balises...)
+    - Modification d'un sous-système qui impacte le système de référence mais qui est mineure
+      (ex: nouvelle baseline générique mineure)"]
+    Q_P_CCS ~~~ Q_P_CCS_NOTE
+    style Q_P_CCS_NOTE fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
+
     Q_P_CCS -->|Non| T_CCS_0["[TSI0] Pas de NoBo"]:::tsi_0
     Q_P_CCS -->|Oui| ADD_CCS["[TSI1] NoBo (TSI CCS)"]:::tsi_1
     ADD_CCS --> CHECK_ENE
