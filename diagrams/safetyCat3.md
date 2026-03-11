@@ -8,7 +8,7 @@ flowchart TB
     ID_DESC[0. Description du changement]
     ID_TSI[1. Catégories TSI & NoBo]
     ID_CSM[2. Catégories CSM, CENELEC, AR & Eval. externes]
-    ID_OPE["3. Système opérationnel (AR art. 6)"]
+    ID_OPE["3. Catégories opérationnelles & NSA (AR art. 6)"]
     style ID_DESC fill:#e1bee7,stroke:#4a148c,stroke-width:2px,color:#4a148c
     style ID_TSI fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
     style ID_CSM fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
@@ -28,7 +28,7 @@ flowchart TB
     click ID_OPE href "#3-ope" "Voir le détail Opérationnel (AR art. 6)"
 ```
 
-> **Navigation rapide** : [0. Description](#0-desc) | [1. Détail TSI](#1-tsi) | [2. Détail CSM & EN 50126](#2-csm-cen) | [3. Système opérationnel](#3-ope)
+> **Navigation rapide** : [0. Description](#0-desc) | [1. Détail TSI](#1-tsi) | [2. Détail CSM & EN 50126](#2-csm-cen) | [3. Catégories opérationnelles & NSA](#3-ope)
 
 ---
 
@@ -36,25 +36,18 @@ flowchart TB
 
 ## <a id="0-desc"></a>0. Description du changement
 
-### Identification du changement
-1. **Identification des sous-systèmes impactés** :
-   - [ ] Infrastructure
-   - [ ] Energie
-   - [ ] Contrôle-commande et signalisation au sol
-   - [ ] Contrôle-commande et signalisation à bord
-   - [ ] Exploitation et gestion du trafic (procédures et / ou équipements)
-   - [ ] Applications télématiques
-   - [ ] Matériel roulant
-   - [ ] Entretien (procédures et/ou équipements)
+### 0.1 Diagramme d'identification du type du changement (par sous-système) :
 
-2. **Nature du changement (par sous-système)** :
-   Sélectionner le type de changement parmi les options suivantes :
+Sélectionner le type de changement parmi les options suivantes :
+   
+NB : **SFU** = Système Ferroviaire de l'Union
+
 
 ```mermaid
 flowchart TB
     %% Nodes
     START("0. INITIALISATION")
-    
+
     %% Etape 1 : Sous-systèmes
     SUBSYS{1. Identification des sous-systèmes impactés}
     SUBSYS_LIST["Le changement impacte ce(s) sous-système(s) :
@@ -71,48 +64,51 @@ flowchart TB
     REF_SYS{2. Identification Système de Référence}
     REF_SYS_LIST["Pour chaque sous-système :
     □ Système de référence identifié ?
-    □ Niveau SIL associé (ex: SIL2, SIL4) ?
-    □ Le système est-il inchangé ?"]
+    □ Système de référence legacy ?
+    □ Niveau SIL associé (ex: SIL2, SIL4) ?"]
 
     %% Etape 3 : Substitution
     Q_SUBST{"3. Substitution ?"}
 
-    %% Etape 4 : Déploiement PROJET
-    Q_DEP_IN{"4. Déploiement PROJET (Dans SFU) ?"}
+    %% Etape 4 : Déploiement HORS PROJET (Sans déploiement)
+    Q_NO_DEP{"4. Déploiement Hors Projet ?"}
     
-    %% Etape 5 : Déploiement HORS SFU
-    Q_DEP_OUT{"5. Déploiement HORS SFU ?"}
+    %% Etape 5 : Système Inchangé
+    Q_UNCH{"5. Système de référence inchangé ?"}
 
-    %% --- FEUILLES (Boîtes résultats) ---
-    
+    %% --- FEUILLES (Boîtes résultats avec Titres Complets) ---
     %% Substitution
-    SUBST_RES["(S.L) Substitution Legacy
-    (S.C) Substitution Certifié"]
+    SUBST_RES["□ (S.L) Substitution d'un produit legacy existant
+    □ (S.C) Substitution d'un produit certifié existant"]
     
-    %% Projet (Dans SFU)
-    Q_UNCH_IN{"Système inchangé ?"}
-    IN_UNCH["(DL) Legacy Inchangé
-    (DC) Certifié Inchangé"]
-    IN_CH["(DML) Modif Legacy
-    (DMC) Modif Certifié
-    (DN) Nouveau"]
+    %% Sans Déploiement (Hors Projet)
+    RES_NO_DEP["□ (ML) Modification d'un système de référence legacy sans déploiement prévu dans ce projet
+    □ (MC) Modification d'un système de référence certifié sans déploiement prévu dans ce projet
+    □ (N) Création d'un nouveau système sans déploiement prévu dans ce projet"]
+
+    %% Résultats Inchangé
+    RES_IN_U["<b>SI DÉPLOIEMENT DANS SFU :</b>
+    □ (DL) Déploiement d'un système legacy de référence inchangé
+    □ (DC) Déploiement d'un système de référence certifié et inchangé
+    ___
+    <b>SI DÉPLOIEMENT HORS SFU :</b>
+    □ (DHUL) Déploiement hors SFU d'un système de référence legacy et inchangé
+    □ (DHUC) Déploiement hors SFU d'un système de référence certifié et inchangé"]
     
-    %% Hors SFU
-    Q_UNCH_OUT{"Système inchangé ?"}
-    OUT_UNCH["(DHUL) Legacy Inchangé
-    (DHUC) Certifié Inchangé"]
-    OUT_CH["(DHUML) Modif Legacy
-    (DHUMC) Modif Certifié
-    (DHUN) Nouveau"]
-    
-    %% Sans Déploiement (Cas par défaut si Non partout)
-    NO_DEP_RES["(ML) Modif Legacy
-    (MC) Modif Certifié
-    (N) Nouveau"]
+    %% Résultats Modifié
+    RES_MOD_NEW["<b>SI DÉPLOIEMENT DANS SFU :</b>
+    □ (DML) Déploiement de la modification d'un système de référence legacy
+    □ (DMC) Déploiement de la modification d'un système de référence certifié
+    □ (DN) Création et déploiement d'un nouveau système
+    ___
+    <b>SI DÉPLOIEMENT HORS SFU :</b>
+    □ (DHUML) Déploiement hors SFU de la modification d'un système de référence legacy
+    □ (DHUMC) Déploiement hors SFU de la modification d'un système de référence certifié
+    □ (DHUN) Création et déploiement hors SFU d'un nouveau système"]
     
     %% Etape Finale : Infos Déploiement
     DEPLOY_INFOS{Infos déploiement}
-    DEPLOY_DET["Compléter si applicable le phasage :
+    DEPLOY_DET["Compléter si le phasage est applicable :
     □ Phase pilote (ex : L73 - ETCS L2 SWoLSS) :
     (DMC) Déploiement de la modification d'un sous-système de référence certifié
     □ Phase Rollout (ex : Lignes LXY LZZ LXX - ETCS L2 SWoLSS) :
@@ -131,35 +127,22 @@ flowchart TB
     
     %% Logique Substitution
     Q_SUBST -->|Oui| SUBST_RES
-    Q_SUBST -->|Non| Q_DEP_IN
+    Q_SUBST -->|Non| Q_NO_DEP
     
-    %% Logique Projet
-    Q_DEP_IN -->|Oui| Q_UNCH_IN
-    Q_UNCH_IN -->|Oui| IN_UNCH
-    Q_UNCH_IN -->|Non| IN_CH
+    %% Logique Hors Projet (Sans déploiement)
+    Q_NO_DEP -->|Oui| RES_NO_DEP
+    Q_NO_DEP -->|Non| Q_UNCH
     
-    
-    Q_DEP_IN -->|Non| Q_DEP_OUT
-
-    %% Logique Hors SFU
-    Q_DEP_OUT -->|Oui| Q_UNCH_OUT
-    Q_UNCH_OUT -->|Oui| OUT_UNCH
-    Q_UNCH_OUT -->|Non| OUT_CH
-    
-    
-    %% Logique Sans Déploiement (ni subst, ni projet, ni hors sfu)
-    Q_DEP_OUT -->|Non| NO_DEP_RES
+    %% Logique Système Inchangé
+    Q_UNCH -->|Oui| RES_IN_U
+    Q_UNCH -->|Non| RES_MOD_NEW
 
     %% Convergence vers fin
     SUBST_RES --> STOP
-    
-    IN_UNCH --> DEPLOY_INFOS
-    IN_CH --> DEPLOY_INFOS
-    
-    OUT_UNCH --> DEPLOY_INFOS
-    OUT_CH --> DEPLOY_INFOS
-    
-    NO_DEP_RES --> STOP
+    RES_NO_DEP --> STOP
+
+    RES_IN_U --> DEPLOY_INFOS
+    RES_MOD_NEW --> DEPLOY_INFOS
     
     DEPLOY_INFOS --- DEPLOY_DET
     DEPLOY_DET --> STOP
@@ -173,31 +156,42 @@ flowchart TB
     
     %% Couleurs par catégorie
     style SUBST_RES fill:#e1f5fe
-    style NO_DEP_RES fill:#ffebee
-    style OUT_UNCH fill:#e8f5e9
-    style OUT_CH fill:#e8f5e9
-    style IN_UNCH fill:#fff3e0
-    style IN_CH fill:#fff3e0
+    style RES_NO_DEP fill:#ffebee,text-align:left
+    style RES_IN_U fill:#fff3e0,text-align:left
+    style RES_MOD_NEW fill:#e8f5e9,text-align:left
 ```
 
-### Définitions détaillées des changements
-- **(SL)** Substitution d'un produit legacy existant
-- **(SC)** Substitution d'un produit certifié existant
-- **(ML)** Modification d'un système de référence legacy sans déploiement prévu dans ce projet
-- **(MC)** Modification d'un système de référence certifié sans déploiement prévu dans ce projet
-- **(N)** Création d'un nouveau système sans déploiement prévu dans ce projet
-- **(DHUML)** Déploiement hors du système ferroviaire de l'Union de la modification d'un système de référence legacy
-- **(DHUL)** Déploiement hors du système ferroviaire de l'Union d'un système de référence legacy et inchangé
-- **(DHUMC)** Déploiement hors du système ferroviaire de l'Union de la modification d'un système de référence certifié
-- **(DHUC)** Déploiement hors du système ferroviaire de l'Union d'un système de référence certifié et inchangé
-- **(DHUN)** Création et déploiement hors du système ferroviaire de l’Union d'un nouveau système
-- **(DML)** Déploiement de la modification d'un système de référence legacy
-- **(DL)** Déploiement d'un système legacy de référence inchangé
-- **(DMC)** Déploiement de la modification d'un système de référence certifié
-- **(DC)** Déploiement d'un système de référence certifié et inchangé
-- **(DN)** Création et déploiement d'un nouveau système
+### 0.2 Identification des sous-systèmes impactés :
+- [ ] Infrastructure
+- [ ] Energie
+- [ ] Contrôle-commande et signalisation au sol
+- [ ] Contrôle-commande et signalisation à bord
+- [ ] Exploitation et gestion du trafic (procédures et / ou équipements)
+- [ ] Applications télématiques
+- [ ] Matériel roulant
+- [ ] Entretien (procédures et/ou équipements)
 
-### Informations de déploiement
+### 0.3 Définitions détaillées des types de changements
+
+| ID | Abréviation | Définition |
+| :--- | :--- | :--- |
+| **TYP1** | SL | Substitution d'un produit legacy existant |
+| **TYP2** | SC | Substitution d'un produit certifié existant |
+| **TYP3** | ML | Modification d'un système de référence legacy sans déploiement prévu dans ce projet |
+| **TYP4** | MC | Modification d'un système de référence certifié sans déploiement prévu dans ce projet |
+| **TYP5** | N | Création d'un nouveau système sans déploiement prévu dans ce projet |
+| **TYP6** | DHUML | Déploiement hors SFU de la modification d'un système de référence legacy |
+| **TYP7** | DHUL | Déploiement hors SFU d'un système de référence legacy et inchangé |
+| **TYP8** | DHUMC | Déploiement hors SFU de la modification d'un système de référence certifié |
+| **TYP9** | DHUC | Déploiement hors SFU d'un système de référence certifié et inchangé |
+| **TYP10** | DHUN | Création et déploiement hors SFU d'un nouveau système |
+| **TYP11** | DML | Déploiement de la modification d'un système de référence legacy |
+| **TYP12** | DL | Déploiement d'un système legacy de référence inchangé |
+| **TYP13** | DMC | Déploiement de la modification d'un système de référence certifié |
+| **TYP14** | DC | Déploiement d'un système de référence certifié et inchangé |
+| **TYP15** | DN | Création et déploiement d'un nouveau système |
+
+### 0.4 Informations de déploiement
 - **SFU impacté** : Lignes ou régions
 - **Véhicules de l'Union impactés** : Oui / Non
 - **Phasage** :
@@ -207,10 +201,12 @@ flowchart TB
 
 ---
 
-## <a id="1-tsi"></a>1. Catégorie TSI et NoBo (checklist verticale)
+## <a id="1-tsi"></a>1. Catégorie TSI et NoBo
 
-> **Note** : on ne garde ici que les TSI **susceptibles de mener à un NoBo** (INF, CCS, ENE, RST). Les aspects purement **opérationnels/SMS** (OPE, TAP/TAF, Entretien) **ne sont pas dans ce bloc**. [1](https://www.era.europa.eu/domains/technical-specifications-interoperability/operation-and-traffic-management-tsi_en)[2](https://eur-lex.europa.eu/eli/reg_impl/2019/773/oj/eng)
+### 1.1 Diagramme d'identification des catégories Interopérabilité
 
+
+> **Note** : on ne garde ici que les TSI **susceptibles de mener à un NoBo** (INF, CCS, ENE, RST). Les aspects purement **opérationnels/SMS** (OPE, TAP/TAF, Entretien) **ne sont pas dans ce bloc**.
 ```mermaid
 flowchart TB
     START["DÉBUT : Identification TSI"] --> CHECK_INF{"Infrastructure (INF) ?"}
@@ -219,6 +215,15 @@ flowchart TB
     CHECK_INF -->|Oui| Q_TSI_INF{"TSI INF, PRM, SRT applicable ?"}
     Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
     Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
+    
+    Q_P_INF_NOTE["<b>Note (si Non modifié) :</b>
+    - Modification d'un sous-système qui n'impacte pas les zones géographiques ni le système de référence
+      (ex: déplacements de signaux et de balises...)
+    - Modification d'un sous-système qui impacte le système de référence mais qui est mineure
+      (ex: nouvelle baseline générique mineure)"]
+    Q_P_INF ~~~ Q_P_INF_NOTE
+    style Q_P_INF_NOTE fill:#fff,stroke:#333,stroke-dasharray: 5 5,text-align:left
+
     Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
     Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
     ADD_INF --> CHECK_CCS
@@ -275,9 +280,7 @@ flowchart TB
     classDef tsi_m1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:1px;
 ```
 
-## Définition des catégories et impacts
-
-### Catégories TSI (Interopérabilité)
+## 1.2 Catégories TSI (Interopérabilité)
 
 | ID | Définition | Impact évaluation |
 | :--- | :--- | :--- |
@@ -289,6 +292,8 @@ flowchart TB
 ---
 
 ## <a id="2-csm-cen"></a>2. Catégories CSM, CENELEC, AR & Eval. externes
+
+### 2.1 Diagramme d'identification des catégories Safety
 
 [Retour en haut](#processus-dévaluation-externe--vue-densemble)
 
@@ -335,13 +340,13 @@ flowchart TB
     
     CHECK_ETCS{"TSI CCS 2023 (ETCS) ?"}
     CHECK_ETCS -->|Oui| FORCE_ASBO["+ CSM RA (AsBo) - Obligatoire"]:::risk
-    CHECK_ETCS -->|Non| NEXT_CEN((Suite))
-    FORCE_ASBO --> NEXT_CEN
+    CHECK_ETCS -->|Non| Q_NATURE
+    FORCE_ASBO --> Q_NATURE
 
     %% =========================
     %% 4. CATÉGORISATION CENELEC
     %% =========================
-    NEXT_CEN --> Q_NATURE{"Nature du Système ?"}
+    Q_NATURE{"Nature du Système ?"}
 
     %% CAS LEGACY
     Q_NATURE -->|Legacy| RES_CEN_M1["CEN-1 (Pas d'ISA)"]:::ok
@@ -361,10 +366,10 @@ flowchart TB
 
     Q_SIG_HW{"Matériel Signalisation ?"}
     Q_SIG_HW -->|Oui| ADD_50129["+ EN 50129"]:::cen    
-    Q_SIG_HW -->|Non| NEXT_SW((Suite))
-    ADD_50129 --> NEXT_SW
+    Q_SIG_HW -->|Non| Q_SW
+    ADD_50129 --> Q_SW
 
-    NEXT_SW --> Q_SW{"Logiciel (SW) ?"}
+    Q_SW{"Logiciel (SW) ?"}
     Q_SW -->|Oui| ADD_50128["+ EN 50128"]:::cen
     Q_SW -->|Non| END([Fin Référentiel Sécurité])
     ADD_50128 --> END
@@ -384,9 +389,7 @@ flowchart TB
 
 ---
 
-## Définition des catégories et impacts
-
-### Catégories CSM (Sécurité)
+### 2.2 Catégories CSM (Sécurité)
 
 | ID | Définition | Impact évaluation |
 | :--- | :--- | :--- |
@@ -397,7 +400,7 @@ flowchart TB
 | **CSM3** | Changement relatif à la sécurité avec impact significatif sans autorisation de mise en service par la NSA | AsBo |
 | **CSM4** | Changement relatif à la sécurité avec impact significatif et avec autorisation de mise en service par la NSA | AsBo & NSA AMES |
 
-### Catégories EN 50126 (CENELEC)
+### 2.3 Catégories EN 50126 (CENELEC)
 
 | ID | Définition | Impact évaluation |
 | :--- | :--- | :--- |
@@ -406,10 +409,74 @@ flowchart TB
 | **CEN1** | Substitution dans le cadre d'un entretien | Pas d’ISA |
 | **CEN2** | Changement nécessistant aucunes ou des preuves de sécurité mineures | Pas d’ISA |
 | **CEN3** | Changement nécessistant des preuves de sécurité significatives | ISA |
-
 ---
 
-## <a id="3-ope"></a>3. Système opérationnel (AR art. 6)
+### 2.4 Liens possibles entre catégories CSM, CEN, TSI
+
+| Type de changement | Catégories TSI possibles | NoBo? | Catégories CSM possibles | AsBo? | Catégories CEN possibles | ISA? |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **(TYP1 - SL)** Substitution d'un produit legacy existant | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non |
+| **(TYP2 - SC)** Substitution d'un produit certifié existant | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non |
+| **(TYP3 - ML)** Modification d'un système de référence legacy sans déploiement prévu dans ce projet | TSI-1, TSI0?, TSI1? | Oui (si TSI1) | CSM-1 | Non | CEN-1 | Non |
+| **(TYP4 - MC)** Modification d'un système de référence certifié sans déploiement prévu dans ce projet | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP5 - N)** Création d'un nouveau système sans déploiement prévu dans ce projet | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP6 - DHUML)** Déploiement hors SFU de la modification d'un système de référence legacy | TSI-1| Non | CSM-1 | Non | CEN-1 | Non |
+| **(TYP7 - DHUL)** Déploiement hors SFU d'un système de référence legacy et inchangé | TSI-1| Non | CSM-1 | Non | CEN-1 | Non |
+| **(TYP8 - DHUMC)** Déploiement hors SFU de la modification d'un système de référence certifié | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP9 - DHUC)** Déploiement hors SFU d'un système de référence certifié et inchangé | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP10 - DHUN)** Création et déploiement hors SFU d'un nouveau système | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP11 - DML)** Déploiement de la modification d'un système de référence legacy | TSI-1, TSI0?, TSI1? | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN-1 | Non |
+| **(TYP12 - DL)** Déploiement d'un système legacy de référence inchangé | TSI-1, TSI0?, TSI1? | Oui (si TSI1)  | CSM0, CSM2 | Non | CEN-1 | Non |
+| **(TYP13 - DMC)** Déploiement de la modification d'un système de référence certifié | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP14 - DC)** Déploiement d'un système de référence certifié et inchangé | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+| **(TYP15 - DN)** Création et déploiement d'un nouveau système | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN0, CEN2, CEN3 | Oui (si CEN3) |
+
+\* **NSA APIS** : Autorisation de mise en service (Authorisation to Place Into Service) délivrée par l'autorité nationale de sécurité.
+
+
+
+
+### 2.5 Liens entre catégories CSM, CEN, TSI et ETCS
+
+#### 2.5.1 Tous les liens
+
+| Type de changement | Catégories TSI possibles | NoBo? | Catégories CSM possibles | AsBo? | Catégories CEN possibles | ISA? | CAT ETCS |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **(TYP1 - SL)** Substitution d'un produit legacy existant | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
+| **(TYP2 - SC)** Substitution d'un produit certifié existant | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
+| **(TYP3 - ML)** Modification d'un système de référence legacy sans déploiement prévu dans ce projet | TSI-1, TSI0?, TSI1? | Oui (si TSI1) | CSM-1 | Non | CEN-1 | Non | CAT-1 |
+| **(TYP4 - MC)** Modification d'un système de référence certifié sans déploiement prévu dans ce projet | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP5 - N)** Création d'un nouveau système sans déploiement prévu dans ce projet | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP6 - DHUML)** Déploiement hors SFU de la modification d'un système de référence legacy | TSI-1| Non | CSM-1 | Non | CEN-1 | Non | CAT-1 |
+| **(TYP7 - DHUL)** Déploiement hors SFU d'un système de référence legacy et inchangé | TSI-1| Non | CSM-1 | Non | CEN-1 | Non | CAT-1 |
+| **(TYP8 - DHUMC)** Déploiement hors SFU de la modification d'un système de référence certifié | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP9 - DHUC)** Déploiement hors SFU d'un système de référence certifié et inchangé | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP10 - DHUN)** Création et déploiement hors SFU d'un nouveau système | TSI-1 | Non | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP11 - DML)** Déploiement de la modification d'un système de référence legacy | TSI-1, TSI0?, TSI1? | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN-1 | Non | CAT-1|
+| **(TYP12 - DL)** Déploiement d'un système legacy de référence inchangé | TSI-1, TSI0?, TSI1? | Oui (si TSI1)  | CSM0, CSM2 | Non | CEN-1 | Non | CAT-1 |
+| **(TYP13 - DMC)** Déploiement de la modification d'un système de référence certifié | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT2, CAT3, CAT4 |
+| **(TYP14 - DC)** Déploiement d'un système de référence certifié et inchangé | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT2 |
+| **(TYP15 - DN)** Création et déploiement d'un nouveau système | TSI-1, TSI0, TSI1 | Oui (si TSI1) | CSM0, CSM2, CSM3, CSM4* | Oui (si CSM3+) | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT2, CAT3, CAT4 |
+
+
+#### 2.5.2 Types de changements applicables à l'ETCS uniquement & détails
+
+| Type de changement | Sous-type / Cas d'application | Catégories TSI possibles | NoBo? | Catégories CSM possibles | AsBo? | Catégories CEN possibles | ISA? | CAT ETCS |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **(TYP2 - SC)** Substitution d'un produit certifié existant | N/A | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
+| **(TYP13 - DMC)** Déploiement de la modification d'un système de référence certifié | 1ère application d'une nouvelle baseline Generic ETCS **mineure** | (TSI0?) TSI1 | Oui | CSM2 | Non | CEN3 | Oui | CAT3 |
+| | 1ère application d'une nouvelle baseline Generic ETCS **majeure** | TSI1 | Oui (si TSI1) | CSM4 | Oui | CEN3 | Oui | CAT4 |
+| **(TYP14 - DC)** Déploiement d'un système de référence certifié et inchangé | Déplacement d'équipements sans changer le scope géographique ou MàJ de dataprep (baseline Generic ETCS inchangée) | TSI-1 | Non | CSM2 | Non | CEN3 | Oui | CAT2 |
+|  | Changements aux frontières d'un projet (baseline Generic ETCS inchangée) | TSI-1 | Non | CSM2 | Non | CEN3 | Oui | CAT2 |
+|  | Remplacement d'interfaces tous relais par IL.PLP ou IL.SIW (baseline Generic ETCS inchangée) | TSI-1 | Non | CSM2 | Non | CEN3 | Oui | CAT2 |
+|   | Rollout d'une nouvelle baseline Generic ETCS **mineure** | TSI-1 | Non | CSM2 | Non | CEN3 | Oui | CAT2 |
+|   | Rollout d'une nouvelle baseline Generic ETCS **majeure** | TSI1 | Oui | CSM2 | Non | CEN3 | Oui | CAT3 |
+|  | Extension du scope ETCS soit géographiquement, soit pour couvrir de nouvelles voies (baseline Generic ETCS inchangée) | TSI1 | Oui | CSM2 | Non | CEN3 | Oui | CAT3 |
+| **(TYP15 - DN)** Création et déploiement d'un nouveau système | - | TSI1 | Oui | CSM4 | Oui | CEN3 | Oui | CAT4 |
+
+## <a id="3-ope"></a>3. Catégories opérationnelles & NSA (AR art. 6)
+
+### 3.1 Diagramme d'identification des catégories opérationnelles
 
 ```mermaid
 flowchart TB
