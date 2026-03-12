@@ -209,22 +209,9 @@ flowchart TB
 > **Note** : on ne garde ici que les TSI **susceptibles de mener à un NoBo** (INF, CCS, ENE, RST). Les aspects purement **opérationnels/SMS** (OPE, TAP/TAF, Entretien) **ne sont pas dans ce bloc**.
 ```mermaid
 flowchart TB
-    START["DÉBUT : Identification TSI"] --> CHECK_INF{"Infrastructure (INF) ?"}
-    
-    %% 1. INFRASTRUCTURE
-    CHECK_INF -->|Oui| Q_TSI_INF{"TSI INF, PRM, SRT applicable ?"}
-    Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
-    Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
-    
-    
-    Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
-    Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
-    ADD_INF --> CHECK_CCS
-    T_INF_M1 --> CHECK_CCS
-    T_INF_0 --> CHECK_CCS
-    CHECK_INF -->|Non| CHECK_CCS
+    START["DÉBUT : Identification TSI"] --> CHECK_CCS{"Contrôle-commande & signalisation (CCS) ?"}
 
-    %% 2. CCS (SANS DÉCOUPE SOL/BORD)
+    %% 1. CCS (SANS DÉCOUPE SOL/BORD)
     CHECK_CCS{"Contrôle-commande & signalisation (CCS) ?"}
     CHECK_CCS -->|Oui| Q_TSI_CCS{"TSI CCS applicable ?"}
     Q_TSI_CCS -->|Non| T_CCS_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
@@ -245,10 +232,22 @@ flowchart TB
 
     Q_P_CCS -->|Non| T_CCS_0["[TSI0] Pas de NoBo"]:::tsi_0
     Q_P_CCS -->|Oui| ADD_CCS["[TSI1] NoBo (TSI CCS)"]:::tsi_1
-    ADD_CCS --> CHECK_ENE
-    T_CCS_M1 --> CHECK_ENE
-    T_CCS_0 --> CHECK_ENE
-    CHECK_CCS -->|Non| CHECK_ENE
+    ADD_CCS --> CHECK_INF
+    T_CCS_M1 --> CHECK_INF
+    T_CCS_0 --> CHECK_INF
+    CHECK_CCS -->|Non| CHECK_INF
+
+    %% 2. INFRASTRUCTURE
+    CHECK_INF{"Infrastructure (INF) ?"}
+    CHECK_INF -->|Oui| Q_TSI_INF{"TSI INF, PRM, SRT applicable ?"}
+    Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
+    Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
+    Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
+    Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
+    ADD_INF --> CHECK_ENE
+    T_INF_M1 --> CHECK_ENE
+    T_INF_0 --> CHECK_ENE
+    CHECK_INF -->|Non| CHECK_ENE
 
     %% 3. ÉNERGIE
     CHECK_ENE{"Énergie (ENE) ?"}
@@ -466,6 +465,8 @@ flowchart TB
 | Type de changement | Sous-type / Cas d'application | Catégories TSI possibles | NoBo? | Catégories CSM possibles | AsBo? | Catégories CEN possibles | ISA? | CAT ETCS |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **(TYP2 - SC)** Substitution d'un produit certifié existant | N/A | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
+| **(TYP4 - MC)** Modification d'un système de référence certifié sans déploiement prévu dans ce projet | Nouvelle baseline Generic ETCS | TSI0, TSI1 | Oui (si TSI1) | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
+| **(TYP5 - N)** Création d'un nouveau système sans déploiement prévu dans ce projet | - | TSI1 | Oui | CSM-1 | Non | CEN0, CEN2, CEN3 | Oui (si CEN3) | CAT-1 |
 | **(TYP13 - DMC)** Déploiement de la modification d'un système de référence certifié | 1ère application d'une nouvelle baseline Generic ETCS **mineure** | (TSI0?) TSI1 | Oui | CSM2 | Non | CEN3 | Oui | CAT3 |
 | | 1ère application d'une nouvelle baseline Generic ETCS **majeure** | TSI1 | Oui (si TSI1) | CSM4 | Oui | CEN3 | Oui | CAT4 |
 | **(TYP14 - DC)** Déploiement d'un système de référence certifié et inchangé | Déplacement d'équipements sans changer le scope géographique ou MàJ de dataprep (baseline Generic ETCS inchangée) | TSI-1 | Non | CSM2 | Non | CEN3 | Oui | CAT2 |
