@@ -1,4 +1,4 @@
-# Processus d'évaluation : Vue d'ensemble
+# Processus d'évaluation : vue d'ensemble
 
 Cliquez sur les boîtes ci-dessous pour accéder au détail de chaque étape.
 
@@ -7,7 +7,7 @@ flowchart TB
     %% Noeuds principaux
     ID_DESC[0. Description du changement]
     ID_TSI[1. Catégories TSI & NoBo]
-    ID_CSM[2. Catégories CSM, CENELEC, AR & Eval. externes]
+    ID_CSM[2. Catégories CSM, CENELEC, AR & Eval. indépendants]
     ID_OPE["3. Catégories opérationnelles & NSA (AR art. 6)"]
     style ID_DESC fill:#e1bee7,stroke:#4a148c,stroke-width:2px,color:#4a148c
     style ID_TSI fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
