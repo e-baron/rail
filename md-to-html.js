@@ -91,12 +91,48 @@ try {
             overflow: hidden; 
             background: var(--mermaid-bg);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            /* Enable resizing */
-            resize: both;
-            overflow: auto; /* Required for resize to work */
+            /* Removed native resize to use custom */
             min-height: 200px;
             position: relative;
+            box-sizing: border-box;
         }
+        
+        /* Custom resize handles */
+        .resize-handle { position: absolute; background: transparent; z-index: 5; }
+        .resize-handle:hover { background: rgba(0, 0, 0, 0.1); }
+        [data-theme="dark"] .resize-handle:hover { background: rgba(255, 255, 255, 0.1); }
+        .resize-handle.n { top: 0; left: 0; right: 0; height: 10px; cursor: n-resize; }
+        .resize-handle.s { bottom: 0; left: 0; right: 0; height: 10px; cursor: s-resize; }
+        .resize-handle.e { top: 0; right: 0; bottom: 0; width: 10px; cursor: e-resize; }
+        .resize-handle.w { top: 0; left: 0; bottom: 0; width: 10px; cursor: w-resize; }
+        .resize-handle.ne { top: 0; right: 0; width: 10px; height: 10px; cursor: ne-resize; z-index: 6; }
+        .resize-handle.nw { top: 0; left: 0; width: 10px; height: 10px; cursor: nw-resize; z-index: 6; }
+        .resize-handle.se { bottom: 0; right: 0; width: 10px; height: 10px; cursor: se-resize; z-index: 6; }
+        .resize-handle.sw { bottom: 0; left: 0; width: 10px; height: 10px; cursor: sw-resize; z-index: 6; }
+
+        .zoom-toggle-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+            padding: 6px 12px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .zoom-toggle-btn:hover { background: var(--pre-bg); }
+        .zoom-toggle-btn.active {
+            background: #d73a49;
+            color: #ffffff;
+            border-color: #d73a49;
+        }
+
         .mermaid svg { 
             height: 100%; 
             width: 100%; 
@@ -224,6 +260,86 @@ try {
             }
         });
 
+        function makeResizable(element) {
+            const handles = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
+            handles.forEach(h => {
+                const handle = document.createElement('div');
+                handle.className = 'resize-handle ' + h;
+                element.appendChild(handle);
+                
+                let startX, startY, startWidth, startHeight, startMarginLeft, startMarginTop;
+                
+                handle.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Stop pan-zoom from grabbing the resize
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    
+                    const style = window.getComputedStyle(element);
+                    startWidth = element.offsetWidth;
+                    startHeight = element.offsetHeight;
+                    startMarginLeft = parseFloat(style.marginLeft) || 0;
+                    startMarginTop = parseFloat(style.marginTop) || 0;
+                    
+                    function doDrag(e) {
+                        let newWidth = startWidth;
+                        let newHeight = startHeight;
+                        let newMarginLeft = startMarginLeft;
+                        let newMarginTop = startMarginTop;
+                        
+                        let deltaX = e.clientX - startX;
+                        let deltaY = e.clientY - startY;
+
+                        if (h.includes('e')) {
+                            newWidth = startWidth + deltaX;
+                        }
+                        if (h.includes('w')) {
+                            newWidth = startWidth - deltaX;
+                            newMarginLeft = startMarginLeft + deltaX;
+                        }
+                        if (h.includes('s')) {
+                            newHeight = startHeight + deltaY;
+                        }
+                        if (h.includes('n')) {
+                            newHeight = startHeight - deltaY;
+                            newMarginTop = startMarginTop + deltaY;
+                        }
+                        
+                        // Apply minimum limits
+                        const MIN_W = 150;
+                        const MIN_H = 150;
+                        
+                        if (newWidth < MIN_W) {
+                            if (h.includes('w')) {
+                                newMarginLeft -= (MIN_W - newWidth);
+                            }
+                            newWidth = MIN_W;
+                        }
+                        if (newHeight < MIN_H) {
+                            if (h.includes('n')) {
+                                newMarginTop -= (MIN_H - newHeight);
+                            }
+                            newHeight = MIN_H;
+                        }
+
+                        element.style.maxWidth = 'none';
+                        element.style.width = newWidth + 'px';
+                        element.style.height = newHeight + 'px';
+                        element.style.marginLeft = newMarginLeft + 'px';
+                        element.style.marginTop = newMarginTop + 'px';
+                    }
+                    
+                    function stopDrag() {
+                        document.documentElement.removeEventListener('mousemove', doDrag);
+                        document.documentElement.removeEventListener('mouseup', stopDrag);
+                    }
+                    
+                    document.documentElement.addEventListener('mousemove', doDrag);
+                    document.documentElement.addEventListener('mouseup', stopDrag);
+                });
+            });
+        }
+
         // --- Mermaid & PanZoom ---
         
         // Collect sources once
@@ -301,6 +417,9 @@ try {
                         // pan-zoom hasn't initialized yet (it's the next lines).
                         // So svgElement IS the raw clean SVG.
                         
+                        // Remove any hardcoded max-width from the rendered SVG to allow full expansion
+                        svgElement.style.maxWidth = 'none';
+
                         // Let's create a hidden print container next to the interactive one.
                         const printContainer = document.createElement('div');
                         printContainer.className = 'mermaid-print';
@@ -312,14 +431,40 @@ try {
                         // Now initialize interactive one as normal...
                         const panZoomInstance = window.svgPanZoom(svgElement, {
                             zoomEnabled: true,
+                            panEnabled: true,
+                            mouseWheelZoomEnabled: false,
                             controlIconsEnabled: true,
                             fit: true,
                             center: true,
                             minZoom: 0.1,
-                            maxZoom: 10,
+                            maxZoom: 30, // Increased max-zoom limit
                             // Prevent pan-zoom form interfering with resize drag
                             preventMouseEventsDefault: false 
                         });
+                        
+                        // Create Toggle Button for Wheel Zoom
+                        let isWheelZoomEnabled = false;
+                        const zoomBtn = document.createElement('button');
+                        zoomBtn.className = 'zoom-toggle-btn';
+                        zoomBtn.textContent = 'Allow wheel zoom';
+                        node.appendChild(zoomBtn);
+                        
+                        zoomBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            isWheelZoomEnabled = !isWheelZoomEnabled;
+                            if (isWheelZoomEnabled) {
+                                panZoomInstance.enableMouseWheelZoom();
+                                zoomBtn.textContent = 'Disable wheel zoom';
+                                zoomBtn.classList.add('active');
+                            } else {
+                                panZoomInstance.disableMouseWheelZoom();
+                                zoomBtn.textContent = 'Allow wheel zoom';
+                                zoomBtn.classList.remove('active');
+                            }
+                        });
+
+                        // Add resizers 
+                        makeResizable(node);
                         
                         // Use ResizeObserver to update pan-zoom when container is resized
                         const observer = new ResizeObserver(() => {
