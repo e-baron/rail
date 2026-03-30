@@ -209,23 +209,9 @@ flowchart TB
 > **Note** : on ne garde ici que les TSI **susceptibles de mener à un NoBo** (INF, CCS, ENE, RST). Les aspects purement **opérationnels/SMS** (OPE, TAP/TAF, Entretien) **ne sont pas dans ce bloc**.
 ```mermaid
 flowchart TB
-    START["DÉBUT : Identification TSI"] --> CHECK_INF{"Infrastructure (INF) ?"}
+    START["DÉBUT : Identification TSI"] --> CHECK_CCS{"Contrôle-commande & signalisation (CCS) ?"}
     
-    %% 1. INFRASTRUCTURE
-    CHECK_INF -->|Oui| Q_TSI_INF{"TSI INF, PRM, SRT applicable ?"}
-    Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
-    Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
-    
-    
-    Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
-    Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
-    ADD_INF --> CHECK_CCS
-    T_INF_M1 --> CHECK_CCS
-    T_INF_0 --> CHECK_CCS
-    CHECK_INF -->|Non| CHECK_CCS
-
-    %% 2. CCS (SANS DÉCOUPE SOL/BORD)
-    CHECK_CCS{"Contrôle-commande & signalisation (CCS) ?"}
+    %% 1. CCS (SANS DÉCOUPE SOL/BORD)
     CHECK_CCS -->|Oui| Q_TSI_CCS{"TSI CCS applicable ?"}
     Q_TSI_CCS -->|Non| T_CCS_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
 
@@ -245,10 +231,24 @@ flowchart TB
 
     Q_P_CCS -->|Non| T_CCS_0["[TSI0] Pas de NoBo"]:::tsi_0
     Q_P_CCS -->|Oui| ADD_CCS["[TSI1] NoBo (TSI CCS)"]:::tsi_1
-    ADD_CCS --> CHECK_ENE
-    T_CCS_M1 --> CHECK_ENE
-    T_CCS_0 --> CHECK_ENE
-    CHECK_CCS -->|Non| CHECK_ENE
+    ADD_CCS --> CHECK_INF
+    T_CCS_M1 --> CHECK_INF
+    T_CCS_0 --> CHECK_INF
+    CHECK_CCS -->|Non| CHECK_INF
+
+    %% 2. INFRASTRUCTURE
+    CHECK_INF{"Infrastructure (INF) ?"}
+    CHECK_INF -->|Oui| Q_TSI_INF{"TSI INF, PRM, SRT applicable ?"}
+    Q_TSI_INF -->|Non| T_INF_M1["[TSI-1] Pas de NoBo"]:::tsi_m1
+    Q_TSI_INF -->|Oui| Q_P_INF{"Paramètre TSI modifié ?"}
+    
+    
+    Q_P_INF -->|Non| T_INF_0["[TSI0] Pas de NoBo"]:::tsi_0
+    Q_P_INF -->|Oui| ADD_INF["[TSI1] NoBo (TSI INF/PRM/SRT)"]:::tsi_1
+    ADD_INF --> CHECK_ENE
+    T_INF_M1 --> CHECK_ENE
+    T_INF_0 --> CHECK_ENE
+    CHECK_INF -->|Non| CHECK_ENE
 
     %% 3. ÉNERGIE
     CHECK_ENE{"Énergie (ENE) ?"}
@@ -524,3 +524,278 @@ flowchart TB
     PLAN --> AVIS["Avis conforme délivré avec l'autorisation (NSA)"]
     OPE_Q -->|Non| TRACE["Traçabilité dans le SMS et documents internes"]
 ```
+
+
+# <a id="scope-app"></a> 4. Définition du scope d'application des lois
+
+## 4.1 Scope de la CSM
+
+### 4.1.1 RÈGLEMENT D’EXÉCUTION (UE) N° 402/2013 DE LA COMMISSION du 30 avril 2013 concernant la méthode de sécurité commune relative à l’évaluation et à l’appréciation des risques et abrogeant le règlement (CE) N° 352/2009
+
+#### Article 2, Champ d’application
+
+1\. Le présent règlement s’applique au proposant tel que défini à l’article 3, point 11), lorsqu’il apporte des **changements au système ferroviaire d'un état membre**.
+
+Ces changements peuvent être de nature technique, opérationnelle ou organisationnelle. En qui concerne les changements organisationnels, seuls ceux susceptibles d’avoir une incidence sur les processus d’exploitation ou d’entretien sont pris en compte conformément aux règles de l’article 4.
+
+5\. Les systèmes ferroviaires exclus du champ d’application de la directive 2004/49/CE conformément à son article 2, paragraphe 2, sont également exclus du champ d’application du présent règlement.
+
+
+### 4.1.2 DIRECTIVE (UE) 2016/798 DU PARLEMENT EUROPÉEN ET DU CONSEIL du 11 mai 2016 relative à la sécurité ferroviaire (refonte de la directive 2004/49/EC)
+
+#### Article 2, Champ d'application :
+
+1\. La présente directive **s'applique au système ferroviaire des États membres**, qui peut être subdivisé en sous-systèmes pour les domaines de nature structurelle et fonctionnelle. Elle couvre les exigences de sécurité pour le système dans son ensemble, y compris la gestion sûre de l'infrastructure et du trafic, ainsi que l'interaction entre les entreprises ferroviaires, les gestionnaires de l'infrastructure et les autres acteurs du système ferroviaire de l'Union.
+
+2\. La présente directive **ne s'applique pas**:  
+a) aux métros;  
+b) aux tramways et aux véhicules ferroviaires légers, ni aux infrastructures exclusivement utilisées par ces véhicules; ou.   
+c) **aux réseaux qui sont séparés sur le plan fonctionnel du reste du système ferroviaire de l'Union et qui sont destinés uniquement à l'exploitation de services locaux, urbains ou suburbains de transport de voyageurs, ni aux entreprises opérant uniquement sur ces réseaux**.
+3\. Les **États membres peuvent exclure du champ d'application** des mesures mettant en œuvre la présente directive:  
+a) **les infrastructures ferroviaires privées, y compris les voies de service, utilisées par leur propriétaire ou par un opérateur aux fins de ses propres activités de transport de marchandises ou pour le transport de personnes à des fins non commerciales, et les véhicules utilisés exclusivement sur ces infrastructures**;  
+b) **les infrastructures et les véhicules réservés à un usage strictement local, historique ou touristique**;  
+c) les infrastructures ferroviaires légères utilisées occasionnellement par des véhicules ferroviaires lourds dans les conditions d'exploitation des systèmes ferroviaires légers, lorsque c'est nécessaire à des fins de connectivité pour ces véhicules uniquement; et  
+d) les véhicules principalement utilisés sur les infrastructures ferroviaires légères mais équipés de certains composants ferroviaires lourds nécessaires pour permettre le transit sur une section confinée et limitée des infrastructures ferroviaires lourdes à des fins de connectivité uniquement.
+
+#### Article 3, Définitions
+
+1\) «système ferroviaire de l'Union», le **système ferroviaire de l'Union** tel qu'il est défini à l'article 2, point 1), de la directive (UE) 2016/797;
+
+
+### 4.1.3 DIRECTIVE (UE) 2016/797 DU PARLEMENT EUROPÉEN ET DU CONSEIL du 11 mai 2016 relative à l'interopérabilité du système ferroviaire au sein de l'Union européenne
+
+#### Article 2,Définitions
+
+Aux fins de la présente directive, on entend par:
+1\) «**système ferroviaire de l'Union**», les éléments énumérés à l'**annexe
+I**;
+
+#### ANNEXE I ÉLEMENTS DU SYSTÈME FERROVIAIRE DE L'UNION
+1\. Réseau
+
+Aux fins de la présente directive, le réseau de l'Union comporte les éléments
+suivants:  
+a) lignes spécialement construites pour la grande vitesse, équipées pour des
+vitesses généralement égales ou supérieures à 250 km/h;  
+b) lignes spécialement aménagées pour la grande vitesse, équipées pour des
+vitesses de l'ordre de 200 km/h;  
+c) lignes spécialement aménagées pour la grande vitesse, qui ont un caractère
+spécifique en raison de contraintes topographiques, de relief ou d'environnement
+urbain, auxquelles la vitesse doit chaque fois être adaptée. Cette
+catégorie comporte les lignes d'interconnexion entre les réseaux à grande
+vitesse et conventionnel, les traversées de gares, les accès aux terminaux,
+aux dépôts, etc., qui sont parcourues à vitesse conventionnelle par du
+matériel roulant «grande vitesse»;  
+d) lignes conventionnelles prévues pour le trafic des voyageurs;  
+e) lignes conventionnelles prévues pour le trafic mixte (voyageurs et
+marchandises);  
+f) lignes conventionnelles prévues pour le trafic des marchandises;  
+g) nœuds «voyageurs»;  
+h) nœuds «marchandises», y compris les terminaux intermodaux;  
+i) voies de raccordement entre les éléments ci-dessus.
+
+Ce réseau comporte les systèmes de gestion du trafic, de localisation et de
+navigation, les installations techniques de traitement des données et de télécommunication prévues pour le transport de voyageurs à longue distance et le
+transport de marchandises sur ce réseau afin de garantir l'exploitation sûre et
+harmonieuse du réseau et la gestion efficace du trafic.
+
+2\. Véhicules
+
+Aux fins de la présente directive, les véhicules de l'Union comprennent tous
+les véhicules aptes à circuler sur tout ou partie du réseau de l'Union:
+- les locomotives et le matériel roulant destiné au transport de voyageurs, y
+compris les motrices de traction à moteurs thermiques ou électriques, les
+rames automotrices à moteurs thermiques ou électriques, ainsi que les
+voitures,
+- les wagons de marchandises, y compris les véhicules surbaissés conçus
+pour l'ensemble du réseau et les véhicules conçus pour le transport de
+camions,
+- les véhicules spéciaux, tels que les engins de voie.
+La liste des véhicules comprend ceux qui sont spécialement conçus pour
+circuler sur les différents types de lignes à grande vitesse décrites au point 1.
+
+#### ANNEXE II SOUS-SYSTÈMES
+
+1\. Liste des sous-systèmes
+
+Aux fins de la présente directive, le système constituant le système ferroviaire
+de l'Union peut être subdivisé selon les sous-systèmes suivants,
+correspondant:  
+a) soit à des domaines de nature structurelle:
+- infrastructure,
+- énergie,
+- contrôle-commande et signalisation au sol,
+- contrôle-commande et signalisation à bord,
+- matériel roulant;  
+
+b) soit à des domaines de nature fonctionnelle:
+— exploitation et gestion du trafic,
+— entretien,
+— applications télématiques aux services des voyageurs et au service du
+fret.
+
+2\. Description des sous-systèmes
+
+Pour chaque sous-système ou partie de sous-système, la liste des constituants
+et des aspects liés à l'interopérabilité est proposée par l'Agence lors de
+l'élaboration du projet de STI correspondant. Sans préjuger la détermination
+de ces aspects et constituants d'interopérabilité, ni l'ordre dans lequel les
+sous-systèmes seront soumis à des STI, les sous-systèmes comprennent les
+éléments suivants:
+
+2.1. Infrastructure
+
+La voie courante, les appareils de voies, les passages à niveau, les ouvrages
+d'art (ponts, tunnels, etc.), les éléments de gare liés au transport ferroviaire
+(notamment entrées, quais, zones d'accès, espaces de services, toilettes et
+systèmes d'information, ainsi que leurs caractéristiques en matière d'accessibilité
+pour les personnes handicapées et les personnes à mobilité réduite),
+les équipements de sécurité et de protection.
+
+2.2. Énergie
+
+Le système d'électrification, y compris le matériel aérien et l'équipement au
+sol du système de mesure et de tarification de la consommation d'électricité.
+
+2.3. Contrôle-commande et signalisation au sol
+
+Tous les équipements au sol nécessaires pour assurer la sécurité, la commande et le contrôle des mouvements des trains autorisés à circuler sur le réseau.
+
+2.4. Contrôle-commande et signalisation à bord
+
+Tous les équipements à bord nécessaires pour assurer la sécurité, la
+commande et le contrôle des mouvements des trains autorisés à circuler
+sur le réseau.
+
+2.5. Exploitation et gestion du trafic
+
+Les procédures et les équipements associés permettant d'assurer une exploitation cohérente des différents sous-systèmes structurels, tant lors du fonctionnement. normal que lors des fonctionnements dégradés, y compris
+notamment la composition et la conduite des trains, la planification et la gestion du trafic.
+Les qualifications professionnelles exigibles pour la réalisation de tout type de service ferroviaire.
+
+## 4.2 Scope de l'AR : conditions d'autorisation de mise en service du sous-système CCS
+
+### 4.2.1 2 JUIN 2025. - Arrêté royal relatif aux exigences applicables à l'infrastructure ferroviaire concernant les conditions d'autorisation de mise en service du sous-système CCS et son intégration en sécurité dans le système ferroviaire belge
+
+#### Section 1re. - Champ d'application
+
+Article 1er. Le présent arrêté s'applique au réseau visé au point 1 de l'annexe 14 du Code ferroviaire. 
+
+Art. 2. Le présent arrêté s'applique au **sous-système CCS " sol "
+, défini à l'annexe 15, point 2.3 du Code
+ferroviaire**, nouveau, renouvelé ou réaménagé.
+
+#### Section 2. - Définitions
+
+Art. 3. Pour l'application du présent arrêté, l'on entend par :  
+1° " sous-système CCS " : le sous-système structurel contrôle-commande et signalisation ;
+
+2° " MSC évaluation des risques " : le Règlement d'exécution (UE) n° 402/2013 de la Commission du 30 avril
+2013 concernant la méthode de sécurité commune relative à l'évaluation et à l'appréciation des risques et
+abrogeant le Règlement (CE) n° 352/2009 ;
+
+3° " STI CCS " : le règlement d'exécution (UE) 2023/1695 de la Commission du 10 aout 2023 relatif à la
+spécification technique d'interopérabilité concernant les sous-systèmes " contrôle commande et signalisation " du
+système ferroviaire dans l'Union européenne et abrogeant le règlement (UE) 2016/919;
+
+4° " ISA " : un assesseur indépendant de sécurité, à savoir, la tierce partie indépendante qui évalue la partie
+sécurité d'un projet relatif à un sous-système CCS, en tant qu'évaluateur des normes européennes ;
+
+5° " sous-systèmes CCS équivalents " : des sous-systèmes CCS qui réalisent les mêmes fonctions
+d'interopérabilité, relevant de la même version système et pour lesquels le fabricant peut garantir l'équivalence de
+tous les sous-systèmes qui participent aux exigences de fiabilité visées à l'annexe 2, chapitre 3, et les critères
+d'acceptation des risques visés à l'article 5 ;
+
+6° " système opérationnel " : l'ensemble des procédures qui sont mises en oeuvre par les opérateurs du
+gestionnaire de l'infrastructure ou les conducteurs de train dans le cadre des fonctions du sous-système CCS.
+Le système opérationnel comprend l'opération de l'installation CCS via l'interface homme-machine mais aussi
+son fonctionnement autonome ;
+
+7° " installation CCS " : le sous-système CCS et tous les autres composants décrits à l'annexe 3, qui forment
+l'installation fixe, et sont responsables de l'exécution de chacune des fonctions de signalisation (classe A et B) et qui permettent au gestionnaire de l'infrastructure d'exploiter l'infrastructure ferroviaire ;
+
+8° " système ETCS intégré " : l'équipement au sol du système ETCS (classe A), tel que décrit dans la STI CCS,
+intégré dans l'installation CCS d'un gestionnaire de l'infrastructure, pour former comme tel un système de
+sécurité cohérent ;
+
+9° " autorisation de mouvement (MA) " : information communiquée par le gestionnaire de l'infrastructure qui
+autorise la distance et la vitesse du déplacement d'un train. Cette information peut être relayée via l'installation
+CCS, qu'elle soit latérale (classe A ou B), ou de cabine (classe A ou B) ou via une procédure opérationnelle CCS ;
+
+10° " procédure opérationnelle CCS " : en cas de défaillance de l'installation CCS, une ou plusieurs fonctions de
+signalisation et de commande sont temporairement reprises par le système opérationnel.
+
+#### Art. N3. Annexe 3. Composants du sous-système CCS sol
+
+1\. **Les composants du sous-système CCS** sol sont :  
+a) **Les équipements de commande et de gestion des circulations** ;  
+b) **Les équipements qui génèrent des autorisations de mouvement** ;  
+c) **Les équipements qui communiquent des autorisations de mouvement** ;  
+d) **Les équipements de télécommunications** ;  
+e) **Les autres éléments de l'infrastructure CCS**.  
+2\. **Les équipements qui génèrent des autorisations de mouvement**:
+A la condition que les utilisateurs de l'infrastructure s'y conforment, les autorisations de mouvement permettent
+de régler la vitesse des trains, et de tenir compte des points dangereux et des équipements techniques (traction,
+télécommunications, freinage,...).
+La production des autorisations de mouvement requiert l'utilisation de moyens matérialisés disposant
+d'interfaces vers les installations de gestion des circulations, et vers la signalisation latérale et les systèmes de
+classe A et B selon les STI, qui sont mis en oeuvre conformément aux dispositions décrites ci-après.
+Sans pour autant que cette énumération soit exhaustive, les autorisations de mouvement prennent en compte
+les exigences propres aux différents composants de l'infrastructure en présence et leur utilisation,
+particulièrement :  
+a) Les éléments en rapport avec l'état libre de la voie ;  
+b) Les éléments en rapport avec le gabarit ;  
+c) Les éléments mobiles dans la voie : appareils de voie, ponts mobiles, taquets d'arrêt et équipements de
+déraillement,... ;  
+d) Les éléments de la traction électrique en rapport avec la caténaire et son alimentation ;  
+e) Les caractéristiques du matériel roulant et de sa conduite ;  
+f) Le sens de circulation des trains ;  
+g) Les conditions spécifiques locales.    
+3\. **Les équipements qui communiquent des autorisations de mouvement**:  
+Les équipements sol du sous-système CCS communiquent aux conducteurs les autorisations de mouvement
+ainsi que leurs différents composants. A cet effet, le gestionnaire de l'infrastructure utilise une signalisation
+latérale, une signalisation en cabine ou une combinaison des deux.  
+a) **Signalisation latérale** :  
+La signalisation latérale comporte les **signaux fixes et mobiles** qui sont implantés dans la voie ou son voisinage.
+Cette signalisation est soutenue par des équipements de classes A et B conformes aux dispositions de la STI
+CCS et aux spécifications techniques d'utilisation du réseau et les procédures opérationnelles relatives à la
+sécurité d'exploitation de l'infrastructure ferroviaire qui sont fixées par le gestionnaire de l'infrastructure.
+Les éléments de la signalisation latérale sont complétés et soutenus par le système national d'aide à la conduite
+TBL1+ tel que défini par le gestionnaire de l'infrastructure conformément à l'annexe 4.
+b) **Signalisation en cabine** :
+La signalisation en cabine est obligatoire sur les infrastructures parcourues à plus de 160 km/h. La signalisation
+en cabine de conduite est composée des équipements de classe A et/ou B selon les dispositions de la STI CCS et
+selon les dispositions fixées par le gestionnaire de l'infrastructure conformément à l'annexe 4.
+c) **Combinaison de signalisation latérale et de signalisation en cabine** :
+Le gestionnaire de l'infrastructure peut combiner de la signalisation latérale et de la signalisation en cabine,
+conformément aux prescriptions de l'annexe 4.  
+4\. **Les équipements de télécommunications** :
+Le gestionnaire de l'infrastructure équipe le réseau de systèmes de télécommunications conformes aux STI et
+aux dispositions réglementaires et normatives en vigueur. L'ensemble permet :  
+a) le fonctionnement de tous les sous-systèmes de l'infrastructure ;  
+b) l'établissement des communication verbale et la transmission de données (requises dans le cadre de
+l'utilisation de l'infrastructure par les entreprises ferroviaires).  
+5\. Autres éléments de l'infrastructure CCS :  
+a) **Systèmes de détection des boîtes d'essieux chaudes**. 
+Sans préjudice des prescriptions des STI, l'infrastructure est équipée d'un système de détection de boîtes
+d'essieux chaudes. Le gestionnaire de l'infrastructure détermine quel est l'équipement nécessaire et les
+exigences auxquelles doivent satisfaire les produits et systèmes utilisés.  
+b) **Passages à niveau et dispositifs assimilés**. 
+Ces installations permettent la traversée à niveau des voies en sécurité par les usagers. Les dispositions
+générales et locales relatives aux passages à niveau sont reprises dans l'arrêté royal relatif aux dispositifs de
+sécurité des passages à niveau sur les voies ferrées et ses arrêtés d'exécution.  
+c) En fonction des besoins identifiés par le gestionnaire de l'infrastructure, le sous-système CCS peut être en
+outre doté d'autres équipements tels que des **dispositifs de protection du personnel travaillant en voie ou aux
+abords**, des **équipements diagnostiques**, etc.
+
+### 4.2.2 30 AOUT 2013. - Loi portant le Code ferroviaire
+#### Art. N14.[1 ANNEXE 14 - ELEMENTS DU SYSTEME FERROVIAIRE DE L'UNION
+> Fait référence au système ferroviaire de l'Union (texte équivalent à celui de la DIRECTIVE (UE) 2016/797 pour l’interopérabilité)
+
+#### Art. N15.[1 ANNEXE 15 - SOUS-SYSTEMES
+> Fait référence aux sous-systèmes du système ferroviaire de l'Union (texte équivalent à celui de la DIRECTIVE (UE) 2016/797 pour l’interopérabilité)
+
+### 4.2.3 Résumé du scope de l'AR
+
+- **Légalement** : scope = CCS “sol” du Code (tous les équipements au sol nécessaires pour assurer la sécurité, la commande et le contrôle des mouvements des trains autorisés à circuler sur le réseau.)
+- **Opérationnellement/techniquement pour l’autorisation**: l’AR étend le périmètre d’analyse au concept d’“installation CCS”, qui inclut EBP/IXL, Traffic Control/TMS, signalisation latérale, ETCS trackside, télécoms, détecteurs de boîtes chaudes, PN, etc. — tout ce qui génère/communique la MA ou influence la sécurité de l’espacement/mouvement. C’est plus large que la définition minimaliste du “CCS sol” et cela rejoint en partie la sphère “Exploitation & gestion du trafic”, mais dans un but de démonstration d’intégration en sécurité (CSM‑RA, critères THR/TFR, disponibilité/procédures de repli). 
