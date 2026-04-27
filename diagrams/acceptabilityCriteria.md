@@ -94,6 +94,7 @@ flowchart TD
     D1 --> Z[Aucune estimation explicite requise]
 
     C -->|Estimation explicite du risque| E{Choix de l'approche}
+    E --> E0[Règles de l'art identifiant une Safety Target]
     E --> E1[Matrice d'acceptation des risques - accidents réseau]
     E --> E2[Statistiques accidents / incidents]
     E --> E3[Jugement d'expert structuré]
@@ -109,6 +110,7 @@ flowchart TD
     I --> J[Allocation fonctionnelle du THR]
     J --> K[TFFR fonctions de sécurité]
 
+    E0 --> K
     CH --> F
     CH --> K
 ```
