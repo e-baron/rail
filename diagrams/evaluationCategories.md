@@ -372,7 +372,7 @@ flowchart TB
     ADD_50129 --> Q_SW
 
     Q_SW{"Logiciel (SW) ?"}
-    Q_SW -->|Oui| ADD_50128["+ EN 50128"]:::cen
+    Q_SW -->|Oui| ADD_50128["+ EN 50716 (ou EN 50128)"]:::cen
     Q_SW -->|Non| END([Fin Référentiel Sécurité])
     ADD_50128 --> END
 
@@ -465,7 +465,7 @@ flowchart TB
 
 | Type de changement | Sous-type / Cas d'application | Catégories TSI possibles | NoBo? | Catégories CSM possibles | AsBo? | Catégories CEN possibles | ISA? | CAT ETCS |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **(TYP2 - SC)** Substitution d'un produit certifié existant | N/A | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
+| **(TYP2 - SC)** Substitution d'un produit certifié existant | Retrofit de composants (balises, LEUs, RBC, …), Correction (installation, configuration...) ou autres activités de maintenance | TSI-1, TSI0 | Non | CSM1 | Non | CEN1 | Non | CAT1 |
 | **(TYP13 - DMC)** Déploiement de la modification d'un système de référence certifié | 1ère application d'une nouvelle baseline Generic ETCS **mineure** | (TSI0?) TSI1 | Oui? | CSM2 | Non | CEN3 | Oui | CAT3 |
 |  | Déviations aux exigences génériques (analyse d'impact, si majeur : analyse CSM & TSI) | TSI0, TSI1 | Oui (si TSI1) | CSM2, CSM3, CSM4 | Oui (si CSM3/4) | CEN3 | Oui | CAT2, CAT3, CAT4? |
 |  | Exigences spécifiques (analyse d'impact, si majeur : analyse CSM & TSI) | TSI0, TSI1 | Oui (si TSI1) | CSM2, CSM3, CSM4 | Oui (si CSM3/4) | CEN3 | Oui | CAT2, CAT3, CAT4 |
