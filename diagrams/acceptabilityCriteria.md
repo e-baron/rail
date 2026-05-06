@@ -118,9 +118,15 @@ flowchart TD
 
 # 3. Plan d'actions
 
+Version précédente:
+
 - **Mise à jour de la matrice d'application des risques** du **RGE 105.1** pour mieux couvrir les applications de signalisation. *NB: Le RGE 105.1 contient une matrice d'appréciation des risques pas aussi complète que celle donnée dans la Safety Management Proc d'I-B103 S. (Fréquence d'occurence "0" à rajouter).*
 - **Mise à jour du processus SIMOC** pour couvrir quand un ISA est requis
 - **Mise à jour du RGE** (dans le RGE 105.1 ou autre) pour traiter des **critères d'acceptation des risques**. *NB: la proposition faite dans ce document serait utilisée pour mettre à jour le RGE 105.1.*
+
+Nouvelle formulation:
+- Mise à jour du RGE visant à préciser et structurer les critères d’acceptation des risques, en assurant leur cohérence avec les exigences de la norme EN 50126-2.
+- Mise à jour du RGE, et plus spécifiquement du processus SIMOC, afin de définir de manière explicite les conditions d’application des normes CENELEC (EN 50126, EN 50716, EN 50129), ainsi que les cas nécessitant le recours à une évaluation indépendante de la sécurité (ISA), en fonction de la nature et de l’impact d'un changement.
 
 # 4. Exigences du KB "Infra"
 
