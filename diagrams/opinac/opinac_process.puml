@@ -1,0 +1,73 @@
+@startuml
+
+skinparam shadowing false
+skinparam dpi 150
+
+skinparam swimlaneTitleFontSize 20
+skinparam swimlaneTitleFontColor Black
+skinparam swimlaneTitleFontStyle bold
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    FontSize 20
+    DiamondFontSize 20
+}
+
+|Reporter|
+
+start
+
+:1. Notification d'un OPINAC;
+
+:2. Enregistrement de l'OPINAC;
+
+|Safety|
+
+:3. Vérification et assignation;
+
+|Technical|
+
+:4. Analyse préliminaire;
+
+|Safety|
+
+:5. Analyse approfondie;
+
+|Management|
+
+:6. Approbation OPINAC RPT;
+
+repeat
+
+|Safety|
+
+:7. Attribution des mesures,
+des Assignees et Due Dates;
+
+|Assignee|
+
+:8. Préparation et planification;
+
+repeat
+
+:9. Exécution des mesures;
+
+backward:11. Replanification;
+
+repeat while (Due Date respectée ?) is (Non) not (Oui)
+
+|Safety|
+
+:12. Vérification de la mise en oeuvre
+et de l'efficacité des mesures;
+
+repeat while (13. Validation ?) is (Non) not (Oui)
+
+:14. Clôture de l'OPINAC;
+
+:15. Information de l'initiateur;
+
+stop
+
+@enduml
