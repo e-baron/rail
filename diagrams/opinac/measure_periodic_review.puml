@@ -1,0 +1,65 @@
+@startuml
+
+skinparam shadowing false
+skinparam dpi 150
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    FontSize 12
+}
+
+|Safety|
+
+start
+
+:1. Déclenchement de la Periodic Review;
+
+:2. Analyse du progrès de la mesure;
+
+:3. Addition d'un commentaire
+[PERIODIC REVIEW];
+
+if (4. Respect de l'échéance\nde la mesure ?) then (Oui)
+    if (7. Proposition de progression\nde statut ?) then (Oui)
+
+        |Assignee|
+
+        :8. Analyse de la proposition;
+
+        if (Accord ?) then (Oui)
+
+            |Safety|
+
+            :9. Mise à jour du statut
+            de la mesure;
+
+            stop
+
+        else (Non)
+
+            |Assignee|
+
+            stop
+
+        endif
+
+    else (Non)
+        |Safety|
+        stop
+
+    endif
+
+else (Non)
+
+    |Assignee|
+
+    :5. Replanification de la mesure\nen accord avec les parties prenantes;
+
+    :6. Mise à jour de l'échéance\nde la mesure;
+
+    stop
+
+endif
+
+@enduml

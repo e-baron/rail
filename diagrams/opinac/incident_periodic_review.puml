@@ -1,0 +1,102 @@
+@startuml incident_periodic_review
+
+<style>
+element {
+    MaximumWidth 120
+}
+</style>
+
+skinparam shadowing false
+skinparam dpi 150
+
+skinparam activity {
+    BackgroundColor White
+    BorderColor Black
+    FontSize 12
+}
+
+|Reporter|
+
+|Safety|
+
+start
+
+:1. Déclenchement de la Periodic Review;
+
+:2. Analyse du statut d'un incident par rapport a ses mesures;
+
+:3. Addition d'un commentaire [PERIODIC REVIEW];
+
+if (4. Toutes les mesures sont fermées et considerées efficaces ?) then (Oui)
+
+    |Safety|
+
+    if (5. Proposition de fermeture de l'incident au Reporter ?) then (Oui)
+
+        |Reporter|
+
+        :6. Analyse de la proposition de fermeture;
+
+        if (7. Proposition fermeture acceptee ?) then (Oui)
+
+            |Safety|
+
+            :8. Mise a jour du statut de l'incident;
+
+            stop
+
+        else (Non)
+
+            |Reporter|
+
+            stop
+
+        endif
+
+    else (Non)
+
+        |Safety|
+
+        stop
+
+    endif
+
+else (Non)
+
+    |Safety|
+
+    if (9. Besoin d'ajouter et/ou de supprimer une ou des mesures et proposition associée ?) then (Oui)
+
+        |Safety|
+
+        |Management|
+
+        :Analyse de la proposition et réponse en commentaire;
+
+        if (10. Proposition de mesures acceptee ?) then (Oui)
+
+            |Safety|
+
+            :11. Mise a jour des mesures;
+
+            stop
+
+        else (Non)
+
+            |Management|
+
+            stop
+
+        endif
+
+    else (Non)
+
+        |Safety|
+
+        stop
+
+    endif
+
+endif
+
+@enduml

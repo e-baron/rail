@@ -1,24 +1,32 @@
 @startuml
 
+<style>
+element {
+    MaximumWidth 200
+}
+</style>
+
 skinparam shadowing false
 skinparam dpi 150
 
-skinparam swimlaneTitleFontSize 20
+skinparam swimlaneTitleFontSize 16
 skinparam swimlaneTitleFontColor Black
 skinparam swimlaneTitleFontStyle bold
 
 skinparam activity {
     BackgroundColor White
     BorderColor Black
-    FontSize 20
-    DiamondFontSize 20
+    FontSize 14
+    DiamondFontSize 14
 }
 
-|Reporter|
+|Notifier|
 
 start
 
 :1. Notification d'un OPINAC;
+
+|Reporter|
 
 :2. Enregistrement de l'OPINAC;
 
@@ -42,31 +50,23 @@ repeat
 
 |Safety|
 
-:7. Attribution des mesures,
-des Assignees et Due Dates;
+:7. Affectation des mesures;
 
 |Assignee|
 
 :8. Préparation et planification;
 
-repeat
-
 :9. Exécution des mesures;
-
-backward:11. Replanification;
-
-repeat while (Due Date respectée ?) is (Non) not (Oui)
 
 |Safety|
 
-:12. Vérification de la mise en oeuvre
-et de l'efficacité des mesures;
+:10. Vérification des mesures;
 
-repeat while (13. Validation ?) is (Non) not (Oui)
+repeat while (11. Validation ?) is (Non) not (Oui)
 
-:14. Clôture de l'OPINAC;
+:12. Clôture de l'OPINAC;
 
-:15. Information de l'initiateur;
+:13. Information de l'initiateur;
 
 stop
 
