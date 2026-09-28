@@ -1,0 +1,56 @@
+@startwbs
+
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 18
+skinparam RoundCorner 12
+skinparam legendFontName Arial
+skinparam legendFontSize 18
+
+
+* ⚠ OPINAC 50 - Incidents sur les PNs de L54 & L57
+
+** 🔵 EVT01 - Modification de la logique des PN sur les L54 et L57
+
+*** 🟡 C02 - Positionnement incorrect du ELSE dans la modification proposée
+
+**** 🔴 RC01 - Processus de gestion des modifications de dataprep incomplet et insuffisamment contrôlé
+
+***** 🟢 M01A - Formaliser le processus de gestion des modifications de dataprep & déviations aux notices
+***** 🟢 M01B - Introduire un point de contrôle formel de l'application du processus
+
+**** 🔴 RC02 - Définition du périmètre de test insuffisante
+
+***** 🟢 M02A - Formaliser le contrôle des L_ utilisés pour l'inhibition des ZAX
+***** 🟢 M02B - Définir des lignes directrices pour déterminer le périmètre des essais
+***** 🟢 M02C - Développer un outil d'assistance à la préparation des plans de tests
+
+*** 🟣 CONS01 - Passage de trains avec PN ouverts et signaux routiers permissifs\n12 PN impactés - Situation de quasi-accident
+
+**** 🔵 EVT02 - Correction de la dataprep en situation de crise
+
+***** 🟡 C03 - Oubli de correction de la dataprep
+
+****** 🔴 RC03 - Vérification indépendante de la couverture des essais, conformément à la Notice 22, insuffisante
+
+******* 🟢 M03 - Introduire un contrôle formel avant toute mise ou remise en service
+
+****** 🔴 RC04 - Absence de processus de gestion de crise garantissant les moyens et l'indépendance nécessaires aux essais
+
+******* 🟢 M04 - Formaliser un processus de gestion de crise pour la préparation et la réalisation des essais
+
+***** 🟣 CONS02 - Deux PN de la L54 à nouveau détectés ouverts lors du passage de trains
+
+****** 🟢 M05 - Diffusion du retour d'expérience auprès des acteurs concernés
+
+
+legend right
+  🔵 Événement initiateur
+  🟡 Cause directe
+  🔴 Cause racine
+  🟢 Mesure
+  🟣 Conséquence
+endlegend
+
+@endwbs

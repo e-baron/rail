@@ -2,7 +2,7 @@
 
 <style>
 element {
-    MaximumWidth 200
+    MaximumWidth 230
 }
 </style>
 
@@ -38,9 +38,20 @@ start
 
 :4. Analyse préliminaire;
 
+fork
+
 |Safety|
 
 :5. Analyse approfondie;
+
+fork again
+
+|Quality|
+
+:Support méthodologique;
+
+|Safety|
+end fork
 
 |Management|
 

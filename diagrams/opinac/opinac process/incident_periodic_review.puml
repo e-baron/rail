@@ -2,9 +2,10 @@
 
 <style>
 element {
-    MaximumWidth 120
+    MaximumWidth 190
 }
 </style>
+
 
 skinparam shadowing false
 skinparam dpi 150
@@ -15,8 +16,9 @@ skinparam activity {
     FontSize 12
 }
 
-|Reporter|
 
+
+|Management|
 |Safety|
 
 start
@@ -29,11 +31,9 @@ start
 
 if (4. Toutes les mesures sont fermées et considerées efficaces ?) then (Oui)
 
-    |Safety|
-
     if (5. Proposition de fermeture de l'incident au Reporter ?) then (Oui)
 
-        |Reporter|
+        |Management|
 
         :6. Analyse de la proposition de fermeture;
 
@@ -42,42 +42,6 @@ if (4. Toutes les mesures sont fermées et considerées efficaces ?) then (Oui)
             |Safety|
 
             :8. Mise a jour du statut de l'incident;
-
-            stop
-
-        else (Non)
-
-            |Reporter|
-
-            stop
-
-        endif
-
-    else (Non)
-
-        |Safety|
-
-        stop
-
-    endif
-
-else (Non)
-
-    |Safety|
-
-    if (9. Besoin d'ajouter et/ou de supprimer une ou des mesures et proposition associée ?) then (Oui)
-
-        |Safety|
-
-        |Management|
-
-        :Analyse de la proposition et réponse en commentaire;
-
-        if (10. Proposition de mesures acceptee ?) then (Oui)
-
-            |Safety|
-
-            :11. Mise a jour des mesures;
 
             stop
 
@@ -96,6 +60,35 @@ else (Non)
         stop
 
     endif
+
+endif
+->Non;
+if (9. Besoin d'ajouter et/ou de supprimer une ou des mesures et proposition associée ?) then (Oui)
+
+        |Management|
+
+        :10. Analyse de la proposition et réponse en commentaire;
+
+        if (11. Proposition de mesures acceptee ?) then (Oui)
+
+            |Safety|
+
+            :12. Mise a jour des mesures;
+
+            stop
+
+        else (Non)
+
+            |Management|
+
+            stop
+
+        endif
+
+else (Non)
+
+        |Safety|
+        stop
 
 endif
 
