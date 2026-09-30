@@ -8,6 +8,11 @@ skinparam RoundCorner 12
 skinparam legendFontName Arial
 skinparam legendFontSize 18
 
+<style>
+element {
+    MaximumWidth 760
+}
+</style>
 
 * ⚠ OPINAC 50 - Incidents sur les PNs de L54 & L57
 
@@ -15,34 +20,30 @@ skinparam legendFontSize 18
 
 *** 🟡 C02 - Positionnement incorrect du ELSE dans la modification proposée
 
-**** 🔴 RC01 - Processus de gestion des modifications de dataprep incomplet et insuffisamment contrôlé
+**** 🔴 RC01 - Non-respect des prescriptions imposant la validation des déviations au formalisme avant la mise en service
 
-***** 🟢 M01A - Formaliser le processus de gestion des modifications de dataprep & déviations aux notices
+***** 🟢 M01A - Adapter le processus de gestion des modifications de dataprep lors de déviation par rapport au formalisme des notices
 ***** 🟢 M01B - Introduire un point de contrôle formel de l'application du processus
 
-**** 🔴 RC02 - Définition du périmètre de test insuffisante
+**** 🔴 RC02 - Périmètre de test insuffisant
 
 ***** 🟢 M02A - Formaliser le contrôle des L_ utilisés pour l'inhibition des ZAX
-***** 🟢 M02B - Définir des lignes directrices pour déterminer le périmètre des essais
+***** 🟢 M02B - Considérer améliorer les lignes directrices pour déterminer le périmètre des essais
 ***** 🟢 M02C - Développer un outil d'assistance à la préparation des plans de tests
 
 *** 🟣 CONS01 - Passage de trains avec PN ouverts et signaux routiers permissifs\n12 PN impactés - Situation de quasi-accident
 
-**** 🔵 EVT02 - Correction de la dataprep en situation de crise
+**** 🔵 EVT02 - Correction de la dataprep en cas d'incident
 
 ***** 🟡 C03 - Oubli de correction de la dataprep
 
-****** 🔴 RC03 - Vérification indépendante de la couverture des essais, conformément à la Notice 22, insuffisante
+****** 🔴 RC03 - Absence de processus de gestion d'incident assurant la disponibilité des ressources, des moyens d'essai et des contrôles requis avant la remise en service
 
-******* 🟢 M03 - Introduire un contrôle formel avant toute mise ou remise en service
+******* 🟢 M03 - Mettre en place un processus de gestion des incidents garantissant la disponibilité des ressources, l'indépendance des rôles et les moyens nécessaires à la réalisation des essais.
 
-****** 🔴 RC04 - Absence de processus de gestion de crise garantissant les moyens et l'indépendance nécessaires aux essais
+***** 🟣 CONS02 - Un PN de la L54 à nouveau détecté ouvert au passage d'un train
 
-******* 🟢 M04 - Formaliser un processus de gestion de crise pour la préparation et la réalisation des essais
-
-***** 🟣 CONS02 - Deux PN de la L54 à nouveau détectés ouverts lors du passage de trains
-
-****** 🟢 M05 - Diffusion du retour d'expérience auprès des acteurs concernés
+****** 🟢 M04 - Diffusion du retour d'expérience auprès des acteurs concernés
 
 
 legend right
