@@ -20,10 +20,9 @@ element {
 
 *** 🟡 C02 - Positionnement incorrect du ELSE dans la modification proposée
 
-**** 🔴 RC01 - Non-respect des prescriptions imposant la validation des déviations au formalisme avant la mise en service
+**** 🔴 RC01 - Mise en service d'une modification hors formalisme sans validation préalable
 
-***** 🟢 M01A - Adapter le processus de gestion des modifications de dataprep lors de déviation par rapport au formalisme des notices
-***** 🟢 M01B - Introduire un point de contrôle formel de l'application du processus
+***** 🟢 M01 - Adapter le processus de gestion des modifications de dataprep lors de déviation par rapport au formalisme des notices
 
 **** 🔴 RC02 - Périmètre de test insuffisant
 
